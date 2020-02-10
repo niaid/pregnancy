@@ -1,0 +1,192 @@
+---
+title: "Reproducible workflow for the project"
+subtitle: "\"Multi-modal immune phenotyping of maternal peripheral blood in normal human pregnancy\""
+author: "Yuri Kotliarov, Richard Apps"
+output: 
+  html_notebook: 
+    toc: yes
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Introduction
+
+The following workflow was used to analyze the data and generate the figures for our paper "Multi-modal immune phenotyping of maternal peripheral blood in normal human pregnancy" to be published in JCI Insight in 2020.
+
+<br/>
+
+The workflow requires several R packages. To install run these commands in R:
+
+```
+# CRAN:
+install.packages(c("tidyverse", "data.table", "readxl", "circlize"), repos = "https://cran.rstudio.com")
+
+# Bioconductor:
+install.packages("BiocManager")
+BiocManager::install()
+BiocManager::install(c("fgsea", "corrplot", "ComplexHeatmap", "survcomp""))
+install.packages("eNetXplorer")
+
+# Somalogic:
+devtools::install_github("cran/pathological")
+BiocManager::install("readat") 
+
+```
+
+# Data directory
+
+The data directory should contain the following files:
+
+* **Pregnancy_clinical_data.xlsx** - Clinical data for study participants, general and measured at each visits, including CBC and TBNK clinical flow
+* **Pregnancy_flow_cytometry.xlsx** - Flow cytometry data: gated cell population frequencies, annotation and selected populations for Figure 2
+* **Pregnancy.hybNorm.plateScale.calibrate.20170512.adat** - Somalogic data in ADAT file after normalization for hybridization  batch, scaling by plates and calibration against reference data
+* **Model_genes.xlsx** - model genes from Aghaeepour et al, American journal of obstetrics and gynecology (2018)
+* **pred.soma.old.txt** - list of 8 proteins in reduced model published in  Aghaeepour et al (2018)
+* **pred.soma.new.txt** - list of 7 proteins in the new model (provided for reproducibility)
+
+<br/>
+
+# Generated data and figures
+
+The new directories will be created by the workflow:
+
+  * **data_generated** - input data reformatted or prefiltered
+  * **results** - results of the analyses
+  * **figures** - all fiures in PNG or PDF foremat are stored here
+
+# Plots visits map (Figure 1)
+
+```{r}
+source("R/plot_visits.r")
+```
+
+# Prepare clinical data from further analysis
+
+```{r}
+source("R/clinical_data_prep.r")
+```
+
+
+# Flow data analysis (Figure 2)
+
+```{r}
+source("R/flow_analysis.r")
+```
+
+# Somalogic data pre-processing and analysis
+
+```{r}
+source("R/soma_analysis.r")
+```
+
+# Correlating Somalogic and flow cytometry data (Supp. Fig. 1)
+
+```{r}
+source("R/soma_vs_flow.r")
+```
+
+# Prepare Somalogic data for elastic net analysis
+
+```{r}
+source("R/soma_enet_prep.r")
+```
+
+# Run eNetXplorer for previous model of 70 genes (Figure 3A)
+
+```{r}
+source("R/Soma_70genes_enet_run.r")
+source("R/Soma_70genes_enet_FIGURE.r")
+```
+
+# Run eNetXplorer for previous reduced model of 8 genes (Figure 3B)
+
+```{r}
+source("R/Soma_8genes_enet_run.r")
+source("R/Soma_8genes_enet_FIGURE.r")
+```
+
+# Run eNetXplorer for all genes and check the erichment of genes from previous models (Supp. Fig. 2)
+
+```{r}
+source("R/Soma_all.genes_enet_run.r")
+source("R/Soma_all.genes_enet_enrichment.r")
+```
+
+
+# Run eNetXplorer removing 70 genes from previous model (Figure 3C,D)
+
+```{r}
+source("R/Soma_70genes.removed_enet_run.r")
+source("R/Soma_70genes.removed_enet_FIGURE.r")
+```
+
+# Correlate data for 8 genes in the old model and 7 genes in the new model
+
+```{r}
+source("R/soma_8_vs_7_correlation.r")
+```
+
+# Run eNetXplorer for Clinical data including CBC and TBNK clinical flow (Figure 3F,G)
+
+```{r}
+source("R/Clinical_enet_run.r")
+source("R/Clinical_enet_FIGURE.r")
+```
+
+# Run eNetXplorer for CBC data only (Supp. Fig. 3)
+
+```{r}
+source("R/CBC_enet_run.r")
+source("R/CBC_enet_FIGURE.r")
+```
+
+
+---
+
+```
+> sessionInfo()
+R version 3.6.1 (2019-07-05)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 17763)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252  LC_CTYPE=English_United States.1252    LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                           LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] grid      stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] eNetXplorer_1.0.2    ComplexHeatmap_2.0.0 corrplot_0.84        fgsea_1.10.1         Rcpp_1.0.2          
+ [6] BiocManager_1.30.4   circlize_0.4.8       readat_1.10.0        readxl_1.3.1         data.table_1.12.2   
+[11] forcats_0.4.0        stringr_1.4.0        dplyr_0.8.3          purrr_0.3.2          readr_1.3.1         
+[16] tidyr_0.8.3          tibble_2.1.3         ggplot2_3.2.0        tidyverse_1.2.1     
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-141                bitops_1.0-6                matrixStats_0.54.0          lubridate_1.7.4            
+ [5] progress_1.2.2              RColorBrewer_1.1-2          httr_1.4.1                  GenomeInfoDb_1.20.0        
+ [9] tools_3.6.1                 backports_1.1.4             R6_2.4.0                    KernSmooth_2.23-15         
+[13] lazyeval_0.2.2              BiocGenerics_0.30.0         colorspace_1.4-1            GetoptLong_0.1.7           
+[17] withr_2.1.2                 assertive.reflection_0.0-4  prettyunits_1.0.2           tidyselect_0.2.5           
+[21] gridExtra_2.3               compiler_3.6.1              glmnet_2.0-18               cli_1.1.0                  
+[25] rvest_0.3.4                 Biobase_2.44.0              expm_0.999-4                assertive.properties_0.0-4 
+[29] xml2_1.2.1                  DelayedArray_0.10.0         assertive.files_0.0-2       caTools_1.17.1.2           
+[33] scales_1.0.0                XVector_0.24.0              assertive.numbers_0.0-2     pkgconfig_2.0.2            
+[37] rlang_0.4.0                 GlobalOptions_0.1.0         rstudioapi_0.10             shape_1.4.4                
+[41] generics_0.0.2              jsonlite_1.6                gtools_3.8.1                BiocParallel_1.17.18       
+[45] zip_2.0.4                   RCurl_1.95-4.12             magrittr_1.5                GenomeInfoDbData_1.2.1     
+[49] Matrix_1.2-17               munsell_0.5.0               S4Vectors_0.22.0            pathological_0.1-2         
+[53] stringi_1.4.3               assertive.base_0.0-7        SummarizedExperiment_1.14.1 zlibbioc_1.30.0            
+[57] gplots_3.0.1.1              plyr_1.8.4                  gdata_2.18.0                parallel_3.6.1             
+[61] crayon_1.3.4                lattice_0.20-38             haven_2.1.1                 hms_0.5.1                  
+[65] zeallot_0.1.0               pillar_1.4.2                GenomicRanges_1.36.0        rjson_0.2.20               
+[69] assertive.sets_0.0-3        reshape2_1.4.3              codetools_0.2-16            stats4_3.6.1               
+[73] fastmatch_1.1-0             glue_1.3.1                  calibrate_1.7.2             modelr_0.1.5               
+[77] foreach_1.4.7               png_0.1-7                   vctrs_0.2.0                 testthat_2.2.1             
+[81] cellranger_1.1.0            gtable_0.3.0                clue_0.3-57                 assertive.strings_0.0-3    
+[85] assertthat_0.2.1            openxlsx_4.1.0.1            broom_0.5.2                 assertive.types_0.0-3      
+[89] iterators_1.0.12            IRanges_2.18.2              cluster_2.1.0    
+
+```
