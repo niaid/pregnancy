@@ -9,7 +9,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-# Introduction
+## Introduction
 
 The following workflow was used to analyze the data and generate the figures for our paper "Multi-modal immune phenotyping of maternal peripheral blood in normal human pregnancy" to be published in JCI Insight in 2020.
 
@@ -33,7 +33,7 @@ BiocManager::install("readat")
 
 ```
 
-# Data directory
+## Data directory
 
 The data directory should contain the following files:
 
@@ -46,7 +46,7 @@ The data directory should contain the following files:
 
 <br/>
 
-# Generated data and figures
+## Generated data and figures
 
 The new directories will be created by the workflow:
 
@@ -54,58 +54,58 @@ The new directories will be created by the workflow:
   * **results** - results of the analyses
   * **figures** - all fiures in PNG or PDF foremat are stored here
 
-# Plots visits map (Figure 1)
+## Plots visits map (Figure 1)
 
 ```{r}
 source("R/plot_visits.r")
 ```
 
-# Prepare clinical data from further analysis
+## Prepare clinical data from further analysis
 
 ```{r}
 source("R/clinical_data_prep.r")
 ```
 
 
-# Flow data analysis (Figure 2)
+## Flow data analysis (Figure 2)
 
 ```{r}
 source("R/flow_analysis.r")
 ```
 
-# Somalogic data pre-processing and analysis
+## Somalogic data pre-processing and analysis
 
 ```{r}
 source("R/soma_analysis.r")
 ```
 
-# Correlating Somalogic and flow cytometry data (Supp. Fig. 1)
+## Correlating Somalogic and flow cytometry data (Supp. Fig. 1)
 
 ```{r}
 source("R/soma_vs_flow.r")
 ```
 
-# Prepare Somalogic data for elastic net analysis
+## Prepare Somalogic data for elastic net analysis
 
 ```{r}
 source("R/soma_enet_prep.r")
 ```
 
-# Run eNetXplorer for previous model of 70 genes (Figure 3A)
+## Run eNetXplorer for previous model of 70 genes (Figure 3A)
 
 ```{r}
 source("R/Soma_70genes_enet_run.r")
 source("R/Soma_70genes_enet_FIGURE.r")
 ```
 
-# Run eNetXplorer for previous reduced model of 8 genes (Figure 3B)
+## Run eNetXplorer for previous reduced model of 8 genes (Figure 3B)
 
 ```{r}
 source("R/Soma_8genes_enet_run.r")
 source("R/Soma_8genes_enet_FIGURE.r")
 ```
 
-# Run eNetXplorer for all genes and check the erichment of genes from previous models (Supp. Fig. 2)
+## Run eNetXplorer for all genes and check the erichment of genes from previous models (Supp. Fig. 2)
 
 ```{r}
 source("R/Soma_all.genes_enet_run.r")
@@ -113,27 +113,27 @@ source("R/Soma_all.genes_enet_enrichment.r")
 ```
 
 
-# Run eNetXplorer removing 70 genes from previous model (Figure 3C,D)
+## Run eNetXplorer removing 70 genes from previous model (Figure 3C,D)
 
 ```{r}
 source("R/Soma_70genes.removed_enet_run.r")
 source("R/Soma_70genes.removed_enet_FIGURE.r")
 ```
 
-# Correlate data for 8 genes in the old model and 7 genes in the new model
+## Correlate data for 8 genes in the old model and 7 genes in the new model
 
 ```{r}
 source("R/soma_8_vs_7_correlation.r")
 ```
 
-# Run eNetXplorer for Clinical data including CBC and TBNK clinical flow (Figure 3F,G)
+## Run eNetXplorer for Clinical data including CBC and TBNK clinical flow (Figure 3F,G)
 
 ```{r}
 source("R/Clinical_enet_run.r")
 source("R/Clinical_enet_FIGURE.r")
 ```
 
-# Run eNetXplorer for CBC data only (Supp. Fig. 3)
+## Run eNetXplorer for CBC data only (Supp. Fig. 3)
 
 ```{r}
 source("R/CBC_enet_run.r")
