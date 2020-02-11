@@ -18,6 +18,7 @@
 /*.Rcheck/
 
 # RStudio files
+*.Rproj
 .Rproj.user/
 
 # produced vignettes
@@ -37,3 +38,10 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Unused folders
+data_generated
+results
+figures
+data/bak
+R/bak
